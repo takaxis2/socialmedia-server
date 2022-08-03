@@ -22,6 +22,8 @@ export class PostController {
    return post;
   }
 
+  
+
   @Get('/:id')
   async getPost(@Param('id') id:number){
     const post = await this.postService.findOne(id);

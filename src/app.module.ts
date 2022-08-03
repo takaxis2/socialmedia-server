@@ -12,11 +12,12 @@ import { FollowModule } from './follow/follow.module';
 import { Follow } from './follow/entity/follow.entity';
 import { Post } from './post/entities/post.entity';
 import { PostLike } from './post/entities/post_like.entity';
+import { UploadModule } from './upload/upload.module';
 
 @Module({
   imports: [
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '..', 'public'),
+      rootPath: join(__dirname, '../public'),
     }),
     ConfigModule.forRoot({
       isGlobal:true
@@ -38,6 +39,7 @@ import { PostLike } from './post/entities/post_like.entity';
     UserModule,
     PostModule,
     FollowModule,
+    UploadModule,
     
   ],
   controllers: [],
