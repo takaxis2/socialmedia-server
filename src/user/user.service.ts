@@ -160,17 +160,46 @@ export class UserService {
     }
 
     try {
-      const users:User[] = await this.userRepository.find(findOption); //밑에거 간편한 버젼?
+      // const users:User[] = await this.userRepository.find(findOption); //밑에거 간편한 버젼?
       // const users:User[] = await this.userRepository.find({
       //   where:{userName: userName},
       //   take:take,
       // }); //이거 몇개씩 가져올건지
       
       //비밀번호는 빼고 뿌려야함
-      const tUsers = users.map((user) => {
-        const {password, ...userInfo} = user;
-        return userInfo;
-      });
+      // const tUsers = users.map((user) => {
+      //   const {password, ...userInfo} = user;
+      //   return userInfo;
+      // });
+
+      const tUsers = await this.dataSource
+        .getRepository(User)
+        .createQueryBuilder('user')
+        .select('user.id')
+        .addSelect('user.email')
+        .addSelect('user.userName')
+        .addSelect('user.firstName')
+        .addSelect('user.lastName')
+        .addSelect('user.profilePicture')
+        
+        .innerJoinAndSelect('user.followers','followers')
+        .innerJoin('followers.follower','follower_user')
+        .addSelect('follower_user.id')  
+        .addSelect('follower_user.userName')
+        .getMany()
+
+        tUsers.map((user)=>{
+          const temp = user.followers.map((follower)=>{
+            return follower.follower.id;
+          })
+          user.followers = temp;
+          return user;
+        })
+
+
+
+
+
       return tUsers;
 
     } catch (error) {
@@ -242,23 +271,27 @@ export class UserService {
       throw new ForbiddenException('Action forbidden');
     }else{
       try {
+        /**
+         * 일단 이미 팔로우를 했는지 검사해야함
+         */
 
-        // const check = await this.followRepository.findOne({where:{
-        //   follower_id: user.id,
-        //   following_id: id
-        // }});
-
-        // if(!check){
-        //   throw new ForbiddenException();
-        // }
-
-        // const following = await this.getUserById(id);
+        const check = await this.followRepository.findOne({
+          where:{
+            follower:user.id,
+            following:id
+          }
+        });
         
+        if(check){
+          return 'already folloing user'
+        }
+
+         
         const follow = new Follow();
         follow.follower = user.id;
         follow.following = id;
-
         await this.followRepository.save(follow);
+
         return "user followed";
 
       } catch (error) {
@@ -282,7 +315,7 @@ export class UserService {
 
         if(!follow){
           throw new ForbiddenException();
-          return;
+          return 'not following user'
         }
         await this.followRepository.remove(follow);
         return "user unfollowed";

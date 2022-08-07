@@ -24,25 +24,25 @@ export class User {
     @Column()
     lastName: string;
 
-    // @CreateDateColumn()
-    // createdAt: string;
-    // @UpdateDateColumn()
-    // updatedAt: string;
+    @CreateDateColumn()
+    createdAt: string;
+    @UpdateDateColumn()
+    updatedAt: string;
 
-    // @Column({nullable:true, default:''})
-    // profilePicture: string;
-    // @Column({nullable:true, default:''})
-    // coverPicture: string;
-    // @Column({nullable:true, default:''})
-    // about: string;
-    // @Column({nullable:true, default:''})
-    // livesIn: string;
-    // @Column({nullable:true, default:''})
-    // worksAt: string;
-    // @Column({nullable:true, default:''})
-    // relationship: string;
-    // @Column({nullable:true, default:''})
-    // country: string;
+    @Column({nullable:true, default:''})
+    profilePicture: string;
+    @Column({nullable:true, default:''})
+    coverPicture: string;
+    @Column({nullable:true, default:''})
+    about: string;
+    @Column({nullable:true, default:''})
+    livesIn: string;
+    @Column({nullable:true, default:''})
+    worksAt: string;
+    @Column({nullable:true, default:''})
+    relationship: string;
+    @Column({nullable:true, default:''})
+    country: string;
 
     @OneToMany(
         ()=>Follow,

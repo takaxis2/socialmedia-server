@@ -1,5 +1,5 @@
 import { User } from "src/user/entities/user.entity";
-import { PrimaryGeneratedColumn, Column, ManyToOne, Entity, JoinColumn } from "typeorm";
+import { PrimaryGeneratedColumn, Column, ManyToOne, Entity, JoinColumn, CreateDateColumn, UpdateDateColumn } from "typeorm";
 
 @Entity('follow')
 export class Follow{
@@ -23,7 +23,11 @@ export class Follow{
     )
     // @Column('following_id')
     following:number; //팔로우 신청 받은 사람 id
-    
+
+    @CreateDateColumn()
+    createdAt: string;
+    @UpdateDateColumn()
+    updatedAt: string;
 
     // @ManyToOne(
     //     ()=>User,
