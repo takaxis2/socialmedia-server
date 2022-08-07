@@ -13,6 +13,7 @@ import { Follow } from './follow/entity/follow.entity';
 import { Post } from './post/entities/post.entity';
 import { PostLike } from './post/entities/post_like.entity';
 import { UploadModule } from './upload/upload.module';
+import { Chat } from './chat/entity/chat.entity';
 
 @Module({
   imports: [
@@ -24,12 +25,12 @@ import { UploadModule } from './upload/upload.module';
     }),
     TypeOrmModule.forRoot({
       type:'mysql',
-      host: `3.37.19.113`,
+      host: `${process.env.DB_HOST}`,
       port: 56448,
-      username:`axis1130`,
-      password:`1q2w3e4r`,
-      database:'sns_service',
-      entities:[User,Follow, Post, PostLike],
+      username: `${process.env.DB_USERNAME}`,
+      password: `${process.env.DB_PASSWORD}`,
+      database: `${process.env.DB_DATABASE}`,
+      entities:[User,Follow, Post, PostLike, Chat],
       synchronize: true,
       logging:true,
       // migrationsRun:false, //이거랑 위에거 둘중 하나만 true여야 이미 있는 테이블이라 안뜬다
