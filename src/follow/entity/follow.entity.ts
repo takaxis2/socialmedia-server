@@ -11,7 +11,11 @@ export class Follow{
     @ManyToOne(
         ()=>User,
         (user)=>user.id,
-        {eager:true}
+        {
+            eager:true,
+            onDelete:'CASCADE'
+        },
+        
     )
     // @Column('follower_id')
     follower:number; //팔로우 신청한 사람 id
@@ -19,7 +23,10 @@ export class Follow{
     @ManyToOne(
         ()=>User,
         (user)=>user.id,
-        {eager:true}
+        {
+            eager:true,
+            onDelete:'CASCADE'
+        }
     )
     // @Column('following_id')
     following:number; //팔로우 신청 받은 사람 id

@@ -14,6 +14,9 @@ import { Post } from './post/entities/post.entity';
 import { PostLike } from './post/entities/post_like.entity';
 import { UploadModule } from './upload/upload.module';
 import { Chat } from './chat/entity/chat.entity';
+import { ChatModule } from './chat/chat.module';
+import { Member } from './chat/entity/chat_user.entity';
+import { MessageModule } from './message/message.module';
 
 @Module({
   imports: [
@@ -26,11 +29,11 @@ import { Chat } from './chat/entity/chat.entity';
     TypeOrmModule.forRoot({
       type:'mysql',
       host: `${process.env.DB_HOST}`,
-      port: 56448,
+      port: parseInt(process.env.DB_PORT),
       username: `${process.env.DB_USERNAME}`,
       password: `${process.env.DB_PASSWORD}`,
       database: `${process.env.DB_DATABASE}`,
-      entities:[User,Follow, Post, PostLike, Chat],
+      entities:[User,Follow, Post, PostLike, Chat, Member],
       synchronize: true,
       logging:true,
       // migrationsRun:false, //이거랑 위에거 둘중 하나만 true여야 이미 있는 테이블이라 안뜬다
@@ -41,6 +44,8 @@ import { Chat } from './chat/entity/chat.entity';
     PostModule,
     FollowModule,
     UploadModule,
+    ChatModule,
+    MessageModule
     
   ],
   controllers: [],

@@ -47,6 +47,7 @@ export class User {
     @OneToMany(
         ()=>Follow,
         (follow)=>follow.following,
+        {cascade:true}
     )
     // @ManyToMany(()=>User,(user)=>user.id)
     // @JoinTable()
@@ -56,7 +57,7 @@ export class User {
     @OneToMany(
         ()=>Follow,
         (follow)=>follow.follower,
-        
+        {cascade:true}
     )
     // @ManyToMany(()=>User,(user)=>user.id)
     // @JoinTable()

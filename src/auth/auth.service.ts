@@ -46,6 +46,7 @@ export class AuthService {
         // .addSelect('follower_user.userName')//user.userName 검색
         // .where('user.email = :email',{email: logInDto.email})
         // .getOne()
+
         
         const tUser = await this.dataSource
         .getRepository(User)
@@ -62,34 +63,7 @@ export class AuthService {
         .where('user.email = :email',{email: logInDto.email})
         .getOne()
 
-        const followings = tUser.followings.map((following)=>{
-            const following_user = following.following;
-            const user ={
-                id: following_user.id,
-                userName: following_user.userName,
-                // profilePicture:following_user.profilePicture,
-            }
-            return user;
-        
-        }); 
-        const followers = tUser.followers.map((follower)=>{
-            const follow_user = follower.follower;
-            const user ={
-                id: follow_user.id,
-                userName: follow_user.userName,
-                // profilePicture:follow_user.profilePicture,
-            }
-            return user;
-        }); 
-      
-        tUser.followers = followers;
-        tUser.followings = followings;
-        
-        
-
-        
-
-
+         
         if(tUser == null){
             throw new NotFoundException('없는 이메일 입니다');
         }
@@ -98,12 +72,40 @@ export class AuthService {
             throw new UnauthorizedException('비밀번호가 틀립니다');
         }
 
+        if(tUser.followings.length != 0){
+            const followings = tUser.followings.map((following)=>{
+                const following_user = following.following;
+                const user ={
+                    id: following_user.id,
+                    userName: following_user.userName,
+                    // profilePicture:following_user.profilePicture,
+                }
+                return user;
+                
+            }); 
+            tUser.followings = followings;
+
+        }
+        if(tUser.followers != null){
+
+            const followers = tUser.followers.map((follower)=>{
+                const follow_user = follower.follower;
+                const user ={
+                    id: follow_user.id,
+                    userName: follow_user.userName,
+                    // profilePicture:follow_user.profilePicture,
+                }
+                return user;
+            }); 
+            
+            tUser.followers = followers;
+        }
+        
+       
+
         const {password, ...user} = tUser;
 
       
-        
-        
-
         return {
             user,
             access_Token: this.jwtService.sign(user,{secret:process.env.JWT_SECRET}), //이거 사인이 mal signed다, invalid sign이다 그런게 이거 때문인듯

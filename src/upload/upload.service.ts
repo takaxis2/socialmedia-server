@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { User } from 'src/user/entities/user.entity';
 import { CreateUploadDto } from './dto/create-upload.dto';
 import { UpdateUploadDto } from './dto/update-upload.dto';
+import { uploadFileURL } from './multerOption';
 
 @Injectable()
 export class UploadService {
@@ -11,7 +12,10 @@ export class UploadService {
 */
 
 
-  async uploadFile(uploadDto: CreateUploadDto, file:File, User:User){}
+  uploadFile( file:Express.Multer.File){
+    const path = uploadFileURL(file.filename);
+    return path;
+  }
 
   async uploadFiles(uploadDto: CreateUploadDto){}
 }
