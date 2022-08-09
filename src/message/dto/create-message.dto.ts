@@ -1,1 +1,10 @@
-export class CreateMessageDto {}
+export class CreateMessageDto {
+
+    chatId:number;
+
+    senderId:number;
+
+    text:string;
+
+
+}
